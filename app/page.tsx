@@ -1,113 +1,163 @@
-import Image from "next/image";
+import * as React from "react"
+import Image from "next/image"
+import axios from "axios";
+const backendApiUrl = "https://www.api.awesmatic.in";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+import { Card, CardContent } from "@/components/ui/card"
+import { Product } from '../schemas/ProductSchema';
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import ProductCard from "@/components/product/productCard"
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+async function getData() {
+  const res = await fetch("https://www.api.awesmatic.in/api/customer/homepage_data")
+  if (!res.ok) {
+    throw new Error('Failed to fetch data')
+  }
+  return res.json()
 }
+
+export default async function Home() {
+  const result = await getData()
+  const categories = result.data.shop_by_category;
+  const herosection = result.data.homepage_banners;
+  const bestSellerDeal: Product[] = result.data.deals[0].products;
+  const SummerSaleDeal: Product[] = result.data.deals[4].products;
+  const NewArrivalDeal: Product[] = result.data.deals[1].products;
+
+  // const Brands = result.data.brand;
+  
+
+  return (
+
+    <>
+      <header className="p-5">
+        header
+      </header>
+      {/* Hero section start */}
+      <section className="hero_carousel w-full">
+        <Carousel opts={{align: "start", loop: true }} className="w-full " >
+          <CarouselContent>
+            {herosection.map(({ id, banner, mobile_banner }: any) => (
+              <CarouselItem key={id}>
+                <div className="desktop">
+                  <AspectRatio ratio={1920 / 464}>
+                    <Image fill src={banner} className=" w-full object-cover" alt="hero_img" />
+                  </AspectRatio>
+                </div>
+                <div className="mobile">
+                  <AspectRatio ratio={547 / 365}>
+                    <Image fill src={mobile_banner} className=" w-full object-cover" alt="hero_img" />
+                  </AspectRatio>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+        {/* Hero section end */}
+      </section>
+
+      <section className="category_carousel container p-0 sm:p-auto mt-4">
+        <div className="my-4">
+          <p className="text-3xl text-center font-bold uppercase">Shop By Category</p>
+        </div>
+
+        <Carousel opts={{align: "start", loop: true }} className="w-full " >
+          <CarouselContent>
+
+            {categories.map(({ id, icon, name }: any) => (
+              <CarouselItem key={id} className="basis-1/4 lg:basis-1/6 text-center">
+                <AspectRatio ratio={1 / 1}>
+                  <Image src={icon} className="w-100 rounded" fill alt={name} />
+                </AspectRatio>
+                <div className="p-1 text-center">
+                  <span className="font-semibold text-xs md:text-sm uppercase my_truncate">{name}</span>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+
+      </section>
+
+      <section className="mt-4 container">
+        <div className="my-4">
+          <p className="text-3xl text-center font-bold uppercase">Best Seller</p>
+        </div>
+        <Carousel opts={{align: "start", loop: true }} className="w-full " >
+          <CarouselContent>
+            {bestSellerDeal.map((product) => (
+              <CarouselItem key={product.id} className="basis-1/2 md:basis-1/4 lg:basis-1/6 text-center pl-2">
+                <ProductCard key={product.id} product={product} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+
+      </section>
+
+
+      <section className="mt-4 container">
+        <div className="my-4">
+          <p className="text-3xl text-center font-bold uppercase">Summer Sale</p>
+        </div>
+        <Carousel opts={{align: "start", loop: true }} className="w-full " >
+          <CarouselContent>
+            {SummerSaleDeal.map((product) => (
+              <CarouselItem key={product.id} className="basis-1/2 md:basis-1/4 lg:basis-1/6 text-center pl-2">
+                <ProductCard key={product.id} product={product} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+
+      </section>
+
+      <section className="mt-4 container">
+        <div className="my-4">
+          <p className="text-3xl text-center font-bold uppercase">New Arrivals</p>
+        </div>
+        <Carousel opts={{align: "start", loop: true }} className="w-full " >
+          <CarouselContent>
+            {NewArrivalDeal.map((product) => (
+              <CarouselItem key={product.id} className="basis-1/2 md:basis-1/4 lg:basis-1/6 text-center pl-2">
+                <ProductCard key={product.id} product={product} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+
+      </section>
+      <section>
+      {/* {Brands.map(({id, title}: any) => (
+        <p>{title}</p>
+      ))} */}
+      </section>
+      <footer className="p-4">
+        Footer
+      </footer>
+
+    </>
+  )
+}
+
